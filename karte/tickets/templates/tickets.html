@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2> Hello {{user.first_name}},</h2>
+    <div class='welcome'>
+        <h3><a href="{% url 'logout' %}">Logout</a> here</h3>
+
+        
+            {% csrf_token %}
+            <table style=" border-collapse: collapse; border: 1px solid black;">
+                <tr style=" border-collapse: collapse; border: 1px solid black;">
+                <th>Movies</th>
+                <th>Seat Number / <br>Total Seats</th>
+                <th>genre</th>
+                <th>lenght</th>
+                <th></th><th></th>  </tr>
+                
+                {% for ticket in tickets %}
+                                               
+                                                        <tr style=" border-collapse: collapse; border: 1px solid black;">
+                                                        <td style=" border-collapse: collapse; border: 1px solid black;">
+                    {{ ticket.MovieName }}</td>
+                                                                <td style=" border-collapse: collapse; border: 1px solid black;">
+                    {{ ticket.Seat }}/ {{ ticket.MovieName.TotalSeat }}</td>
+                                                                <td style=" border-collapse: collapse; border: 1px solid black;">
+                    {{ ticket.MovieName.genre }}</td>
+                    <td>{{ ticket.MovieName.lenght }}</td> 
+                        <td>{{ ticket.MovieName.id }}</td>
+                        
+                    <td><a href="{% url 'DeleteTicket' tid=ticket.id_ticket mid=ticket.MovieName.id %}">Delete</a></td>
+                    </tr>
+                        
+                {% endfor %}
+            </table>
+            <h3><a href="{% url 'home' %}">Go back</a> </h3>
+    </div>
+
+
+
+{% endblock %}

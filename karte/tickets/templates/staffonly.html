@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_staff %}
+<!-- sold tickets -->
+<h2> Welcome {{user.first_name}},</h2>
+    <div class='welcome'>
+        <h3>here you can see sold tickets and users</h3>
+        <h4> Total Number of tickets sold : {{ total_tickets }} </h4>        
+        <h4>Username   |   Movie  | Seat no.</h4>
+        {% for ticket in karta %}
+                <p>{{ticket.user}} | {{ticket.MovieName}} | Seat no.{{ ticket.Seat}}</p>
+        {% endfor %}  
+           
+        
+            <h4> Total Number of tickets sold : {{ total_tickets }} </h4>
+        user with most tickets :<b>{{ najvise }}</b> with number of tickets:<b>   {{ maxBroj }} </b>      
+
+
+<!--- Add User as a stuff form -->      
+            <form method='POST'>
+                {% csrf_token %}
+                <h4>Add User as a Staff </h4>
+                <table style=" border-collapse: collapse; border: 1px solid black;">     
+                            <th style="border: 1px solid black;">
+                    Users</th>
+                        <th style="border: 1px solid black;">
+                    Status </th> <th style="border: 1px solid black;">
+                         </th> 
+                      
+                        
+                    <tr>{% for user in usr %}  
+                        {% if user.is_staff == False %}
+                                <td style="border: 1px solid black;"> 
+                                {{ user.username }}</td>
+                                   <td style="border: 1px solid black;"> 
+                        <input type="radio" name="status" value="True"> 
+                                    User </td>
+                          
+                            <td> <input type='submit' value="{{ user.username }}" name='Add'></td></tr>
+                      {% endif %} 
+                    {% endfor %}
+                    
+                </table>
+
+            </form>
+          <br>
+        <a href="{% url 'logout' %}">Logout</a> here
+       <br> 
+    </div>
+{% else %}
+    <h2>You are not authorizied</h2>
+    <a href="{% url 'login' %}">Login</a> here
+{% endif %}
+
+{% endblock %}

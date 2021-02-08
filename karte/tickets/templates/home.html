@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+        <h2> Welcome {{user.first_name}},</h2>
+    <div class='welcome'>
+        <h3>here you can buy tickets to shows</h3>
+        {% csrf_token %}
+        <form method='post'>
+            <table>
+                <th>Movies</th>
+                <th>Genre</th> 
+                <th>Duration</th>
+            {% for movie in movies %}
+            <tr><td>{{ movie.MovieName }}</td>
+            <td>{{ movie.genre }}</td>
+            <td>{{ movie.lenght }}</td>
+            {% if movie.TotalSeat > 0 %}
+            <td>{{ movie.TotalSeat }}</td>
+            <td> <a href="{% url 'BuyTicket' mid=movie.id %}"> Buy Ticket <a></td>    
+            {% else %}
+            <td>Unavailable</td>
+            {%endif%}
+            {%if request.user.is_staff %}
+                <td> <a href="{% url 'DeleteMovie' mid=movie.id %}"> Delete Movie <a></td></tr>
+            {%endif%}
+            {% endfor %}
+            </table>
+            {%if request.user.is_staff%}
+            <h3><a href="{% url 'add' %}">Add </a> a movie </h3>  
+            {%endif%}
+           <!-- <h3><a href="{% url 'add' %}">Add </a> to your tickets </h3>  --> 
+        </form>
+       <br> <a href="{% url 'tickets' %}">My tickets </a>
+    </div><br>
+    <a href="{% url 'logout' %}">Logout</a> here
+    {% else %}
+    <h2>You are not logged in</h2>
+    <a href="{% url 'login' %}">Login</a> here
+{% endif %}
+
+{% endblock %}
